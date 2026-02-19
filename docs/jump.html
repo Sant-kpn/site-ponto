@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>JumpScare</title>
+<style>
+  body {
+    margin: 0;
+    background: white;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  .ponto {
+    width: 30px;
+    height: 30px;
+    background: black;
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+  }
+  #mensagem {
+    position: absolute;
+    top: 40%;
+    width: 100%;
+    font-size: 24px;
+    color: black;
+  }
+  #jump {
+    display: none;
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:white;
+    z-index:9999;
+  }
+  #jump img {
+    width:100%;
+    height:100%;
+    object-fit: cover;
+  }
+</style>
+</head>
+<body>
+
+<div id="mensagem">Essa página foi produzida por Sant</div>
+
+<script>
+  const pontos = [
+    {top:"20%", left:"10%"},
+    {top:"50%", left:"70%"},
+    {top:"80%", left:"30%"}
+  ];
+
+  let current = 0;
+
+  function criarPonto(pos) {
+    const div = document.createElement("div");
+    div.classList.add("ponto");
+    div.style.top = pos.top;
+    div.style.left = pos.left;
+    div.onclick = () => nextPonto();
+    document.body.appendChild(div);
+  }
+
+  function nextPonto() {
+    if(current < pontos.length-1){
+      document.querySelectorAll(".ponto").forEach(p => p.remove());
+      current++;
+      criarPonto(pontos[current]);
+    } else {
+      jumpScare();
+    }
+  }
+
+  function jumpScare(){
+    document.body.innerHTML = `
+      <div id="jump">
+        <img src="https://i.imgur.com/3R0PlfG.jpg" alt="JumpScare"/>
+        <audio autoplay>
+          <source src="https://www.myinstants.com/media/sounds/scary-scream.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+    `;
+    setTimeout(()=>{
+      document.body.innerHTML = '<div id="mensagem">Peguei você, bobo.</div>';
+    }, 2000);
+  }
+
+  // criar primeiro ponto depois de 2 segundos
+  setTimeout(()=>{
+    document.getElementById("mensagem").style.display="none";
+    criarPonto(pontos[current]);
+  }, 2000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Find the Dots</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      overflow: hidden;
+      cursor: crosshair;
+      font-family: Arial, sans-serif;
+    }
+
+    .dot {
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      cursor: pointer;
+    }
+
+    #message {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      text-align: center;
+      color: white;
+      font-size: 24px;
+    }
+
+    #credit {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      color: gray;
+      font-size: 14px;
+    }
+
+    #jumpscare {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('https://i.imgur.com/Z6X9F6P.jpg') no-repeat center center;
+      background-size: cover;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div id="message">Find the dots...</div>
+<div id="credit">Made by Sant</div>
+<div id="jumpscare"></div>
+
+<audio id="scareSound" src="https://www.myinstants.com/media/sounds/movie_1.mp3"></audio>
+
+<script>
+  let clicks = 0;
+  const totalDots = 5;
+
+  function createDot() {
+    const dot = document.createElement("div");
+    dot.className = "dot";
+    dot.style.top = Math.random() * window.innerHeight + "px";
+    dot.style.left = Math.random() * window.innerWidth + "px";
+
+    dot.onclick = function() {
+      dot.remove();
+      clicks++;
+      if (clicks < totalDots) {
+        createDot();
+      } else {
+        triggerScare();
+      }
+    };
+
+    document.body.appendChild(dot);
+  }
+
+  function triggerScare() {
+    document.getElementById("jumpscare").style.display = "block";
+    document.getElementById("scareSound").play();
+  }
+
+  createDot();
+</script>
+
+</body>
+</html>
